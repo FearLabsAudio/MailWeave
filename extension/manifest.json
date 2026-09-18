@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "MailWeave — Conversation Sidebar for Gmail",
+  "short_name": "MailWeave",
+  "version": "1.0.20",
+  "description": "Read Gmail conversations as a clear, private, locally processed message thread.",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "clipboardWrite"],
+  "content_scripts": [{
+    "matches": ["https://mail.google.com/*"],
+    "js": ["core.js", "source.js", "clean.js", "view.js", "app.js"],
+    "run_at": "document_idle",
+    "all_frames": false,
+    "world": "ISOLATED"
+  }],
+  "options_ui": { "page": "options.html", "open_in_tab": true },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'" }
+}

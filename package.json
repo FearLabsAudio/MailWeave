@@ -1,0 +1,10 @@
+{
+  "name": "mailweave",
+  "version": "1.0.20",
+  "private": true,
+  "description": "MailWeave — Conversation Sidebar for Gmail",
+  "type": "module",
+  "scripts": { "test": "node tests/run.mjs", "package": "node tools/package.mjs" },
+  "devDependencies": { "playwright": "1.62.1", "jszip": "3.10.1" },
+  "license": "MIT"
+}
