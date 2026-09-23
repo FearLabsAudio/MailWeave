@@ -1,12 +1,12 @@
 # MailWeave — Conversation Sidebar for Gmail
 
-**V1.0 · extension/package version 1.0.20 · Chrome Manifest V3**
+**V1.0 · extension/package version 1.0.30 · Chrome Manifest V3**
 
 MailWeave turns an open Gmail conversation into a locally processed message sidebar. It preserves authored text, removes evidence-backed signatures and history, links bubbles to their originals, and exports fresh Gmail page data on request.
 
 ## Install
 
-1. Extract `release/MailWeave-v1.0.20.zip` into a permanent folder. Alternatively, use this project's `extension` folder directly.
+1. Extract `release/MailWeave-v1.0.30.zip` into a permanent folder. Alternatively, use this project's `extension` folder directly.
 2. Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select the folder containing `manifest.json`.
 3. Reload any Gmail tabs that were already open.
 4. Open a conversation and select **Chat** near Gmail's upper right. The launcher is hidden on mailbox/search pages without an identifiable conversation.

@@ -248,6 +248,20 @@ await test('32–35 / 40: reserved layout, resize, restore, continuous bubbles, 
   const reply = document.querySelector('textarea'); reply.focus(); reply.value = 'Draft survives'; assert(document.activeElement === reply);
   view.destroy(); assert(!document.querySelector('#mailweave-layout')); assert(reply.value === 'Draft survives');
 });
+await test('Opening and resizing preserves Gmail navigation width and label placement', () => {
+  fixture(1);const root=document.querySelector('body > .nH');root.style.display='flex';
+  const rail=MailWeave.el('nav',{class:'nH','aria-label':'Gmail navigation'});
+  rail.style.cssText='width:220px;max-width:64px;flex-shrink:0;';
+  rail.innerHTML='<div style="display:flex;flex-wrap:wrap"><span style="width:48px;height:32px">Icon</span><span style="width:64px">Mail</span></div>';
+  root.prepend(rail);const main=document.querySelector('[role="main"]');main.style.cssText='flex:1;min-width:0;';
+  const geometry=()=>{const r=rail.getBoundingClientRect(),label=rail.lastElementChild.lastElementChild.getBoundingClientRect();return [r.width,label.left-r.left,label.top-r.top];};
+  const before=geometry(),inline=rail.getAttribute('style');
+  const view=new MailWeave.View({close(){},refresh(){},copy(){},original(){}},440);
+  try {
+    for(const width of [440,650,320]){view.resize(width,false);assert(JSON.stringify(geometry())===JSON.stringify(before),'Gmail navigation geometry changed');assert(main.getBoundingClientRect().right<=view.host.getBoundingClientRect().left+1);}
+  } finally {view.destroy();}
+  assert(rail.getAttribute('style')===inline&&JSON.stringify(geometry())===JSON.stringify(before));
+});
 await test('36: participant colors are stable and aliases explicit', () => {
   const colors = new MailWeave.Colors(['you@example.com', 'alias@example.com']);
   assert(colors.get(record('', 'first@example.com')).color === '#ffffff');
@@ -354,6 +368,13 @@ await test('Forwarded attribution with matching mailto removes bounded history a
   assert(out.includes('New reply')&&out.includes('Bottom reply')&&out.includes('authored diagram'));
   assert(!out.includes('Older reply')&&!out.includes('old banner')&&!out.includes('Nested footer')&&!out.includes('wrote:'));
   const unmatched=await MailWeave.clean([record(html.replace('mailto:a@example.com','mailto:other@example.com'))]);assert(unmatched.items[0].cleanHTML.includes('Older reply'));
+});
+await test('Flattened marked signature matches complete prior signature text and image URLs', async () => {
+  const signature='<div class="gmail_signature"><div>Sender Name</div><div>Contact detail</div><img src="https://ci3.googleusercontent.com/signature"><div class="a6S"><button jsaction="click:download">Download</button></div></div>';
+  const suffix='<p><span class="m_-123gmailsignatureprefix">-- </span></p><p>Sender Name</p><p>Contact detail</p><p><img src="https://ci3.googleusercontent.com/signature"></p>';
+  const {items}=await MailWeave.clean([record('<p>Earlier message</p>'+signature),record('<p>New authored reply</p><img src="https://ci3.googleusercontent.com/authored" alt="authored">'+suffix)]);
+  assert(items[1].cleanHTML.includes('New authored reply')&&items[1].cleanHTML.includes('authored')&&!items[1].cleanHTML.includes('Contact detail')&&!items[1].cleanHTML.includes('/signature'));
+  const changed=await MailWeave.clean([record(signature),record(suffix.replace('/signature','/different'))]);assert(changed.items[1].cleanHTML.includes('Contact detail'));
 });
 await test('41–43: malicious HTML inert, original unchanged, no media requests', async () => {
   fixture(1); const body = document.querySelector('.a3s'); body.innerHTML = '<p style="position:fixed;inset:0" onclick="window.pwned=1">safe</p><script>window.pwned=1</script><img src="https://tracking.invalid/pixel" onerror="window.pwned=1"><a href="javascript:alert(1)">bad URL</a><iframe src="https://tracking.invalid"></iframe><form><button>Fake controls</button></form>';
@@ -475,7 +496,7 @@ await page.evaluate(async () => {
 });
 await fs.mkdir(path.join(root, 'test-results'), { recursive: true });
 await page.screenshot({ path: path.join(root, 'test-results/sidebar.png') });
-const report = { version: '1.0.20', time: new Date().toISOString(), environment: { node: process.version, os: `${os.type()} ${os.release()}`, cpu: os.cpus()[0]?.model, browser: browser.version() }, results, performance: performanceResults, liveGmail: 'NOT RUN: synthetic page only; authenticated live Gmail verification outstanding.' };
+const report = { version: '1.0.30', time: new Date().toISOString(), environment: { node: process.version, os: `${os.type()} ${os.release()}`, cpu: os.cpus()[0]?.model, browser: browser.version() }, results, performance: performanceResults, liveGmail: 'NOT RUN: synthetic page only; authenticated live Gmail verification outstanding.' };
 await fs.writeFile(path.join(root, 'test-results/results.json'), JSON.stringify(report, null, 2));
 await browser.close();
 if (results.some(r => r.status === 'fail')) process.exitCode = 1;

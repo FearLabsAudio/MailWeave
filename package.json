@@ -1,6 +1,6 @@
 {
   "name": "mailweave",
-  "version": "1.0.20",
+  "version": "1.0.30",
   "private": true,
   "description": "MailWeave — Conversation Sidebar for Gmail",
   "type": "module",

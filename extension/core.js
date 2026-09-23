@@ -3,7 +3,7 @@
   'use strict';
   globalThis.MailWeave?.app?.destroy();
   const M = globalThis.MailWeave = {};
-  M.version = '1.0.20';
+  M.version = '1.0.30';
   M.gmail = url => { try { return new URL(url).origin === 'https://mail.google.com'; } catch { return false; } };
   M.normalize = text => (text || '').replace(/\s+/gu, ' ').trim();
   M.email = text => (text || '').trim().toLowerCase();

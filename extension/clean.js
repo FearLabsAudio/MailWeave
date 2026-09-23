@@ -58,6 +58,11 @@
     } while (boundary && boundary !== root && boundary.matches('span.im, .h5'));
   }
   function indexContent(root, index) {
+    for (const signature of root.querySelectorAll('.gmail_signature, [data-smartmail="gmail_signature"]')) {
+      const clone = signature.cloneNode(true);
+      clone.querySelectorAll('.a6S').forEach(n => { if (n.querySelector('button[jsaction]')) n.remove(); });
+      (index.signatures ||= []).push({ text: keyOf(clone), images: [...clone.querySelectorAll('img')].map(n => n.getAttribute('src') || '') });
+    }
     const key = keyOf(root); if (key) index.add(key);
     for (const n of root.querySelectorAll(blocks)) {
       if (n.matches('blockquote') && n.parentElement?.closest('blockquote')) continue;
@@ -89,6 +94,23 @@
     }
   }
   function classify(root, evidence, prior) {
+    // Outlook can flatten a Gmail signature into sibling paragraphs while
+    // retaining its prefixed marker. Match the entire remainder, including
+    // image URLs, against an earlier explicitly marked signature.
+    for (const marker of [...root.querySelectorAll('[class]')].filter(n => [...n.classList].some(c => /^(?:(?:m_-?\d+)|x_)*gmailsignatureprefix$/.test(c)))) {
+      const boundary = marker.closest('p') || marker;
+      const suffix = document.createElement('div');
+      const siblings = []; for (let n = boundary.nextSibling; n; n = n.nextSibling) { siblings.push(n); suffix.append(n.cloneNode(true)); }
+      suffix.querySelectorAll('.a6S').forEach(n => { if (n.querySelector('button[jsaction]')) n.remove(); });
+      const images = [...suffix.querySelectorAll('img')].map(n => n.getAttribute('src') || '');
+      if (prior.signatures?.some(s => s.text === keyOf(suffix) && JSON.stringify(s.images) === JSON.stringify(images))) {
+        remove(boundary, evidence, 'exact-prior-signature');
+        for (const node of siblings) if (node.parentNode) {
+          if (node.nodeType === 1 || node.nodeType === 3) remove(node.nodeType === 3 ? wrapText(node) : node, evidence, 'exact-prior-signature');
+          else node.remove();
+        }
+      }
+    }
     // Outlook explicitly bounds the referenced message, including nested history.
     // Remove the container before its internal metadata is transformed.
     for (const region of [...root.querySelectorAll('[id$="mail-editor-reference-message-container"]')]) {

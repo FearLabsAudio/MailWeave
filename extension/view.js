@@ -95,10 +95,11 @@
     resize(value, persist) {
       this.width = M.clampWidth(value, innerWidth);
       this.host.style.setProperty('width', `${this.width}px`, 'important');
-      // constrain Gmail's JS-sized layout boxes as well as the document body.
+      // Reserve outer layout space without overriding nested Gmail controls.
+      // Nested .nH nodes also include the navigation rail and its own width caps.
       const bodyStyle = getComputedStyle(document.body);
       const margins = (parseFloat(bodyStyle.marginLeft) || 0) + (parseFloat(bodyStyle.marginRight) || 0);
-      this.layout.textContent = `html { overflow-x:auto !important; } body { box-sizing:border-box !important; width:calc(100% - ${this.width + margins}px) !important; max-width:calc(100% - ${this.width + margins}px) !important; min-width:0 !important; } body > .nH, body > div > .nH { max-width:100% !important; } .nH .nH { max-width:100% !important; } [role="main"] { max-width:100% !important; min-width:0 !important; } .dw, .AD { max-width:calc(100vw - ${this.width}px) !important; }`;
+      this.layout.textContent = `html { overflow-x:auto !important; } body { box-sizing:border-box !important; width:calc(100% - ${this.width + margins}px) !important; max-width:calc(100% - ${this.width + margins}px) !important; min-width:0 !important; } body > .nH, body > div:not(.nH) > .nH { max-width:100% !important; } [role="main"] { max-width:100% !important; min-width:0 !important; } .dw, .AD { max-width:calc(100vw - ${this.width}px) !important; }`;
       this.panel.style.setProperty('--bubble-width', `${M.bubbleRatio(this.width) * 100}%`);
       this.divider.setAttribute('aria-valuemin', String(M.clampWidth(0.1, innerWidth)));
       this.divider.setAttribute('aria-valuemax', String(M.clampWidth(innerWidth, innerWidth)));

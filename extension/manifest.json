@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MailWeave — Conversation Sidebar for Gmail",
   "short_name": "MailWeave",
-  "version": "1.0.20",
+  "version": "1.0.30",
   "description": "Read Gmail conversations as a clear, private, locally processed message thread.",
   "minimum_chrome_version": "120",
   "permissions": ["storage", "clipboardWrite"],

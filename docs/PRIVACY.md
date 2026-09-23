@@ -1,6 +1,6 @@
 # MailWeave V1.0 privacy, permissions and dependencies
 
-Version: 1.0.20. Processing happens locally in the current Gmail tab. No analytics, telemetry, cloud processing, AI classification, background email indexing, or persistent email storage is implemented.
+Version: 1.0.30. Processing happens locally in the current Gmail tab. No analytics, telemetry, cloud processing, AI classification, background email indexing, or persistent email storage is implemented.
 
 ## Permissions
 

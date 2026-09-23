@@ -1,6 +1,6 @@
 # MailWeave V1.0 architecture and decisions
 
-Version: 1.0.20. This is an independent implementation of `CLEAN_ROOM_REQUIREMENTS.md`. Only that specification was supplied at the start; no prior extension source, artifacts, fixtures, or lockfile were consulted.
+Version: 1.0.30. This is an independent implementation of `CLEAN_ROOM_REQUIREMENTS.md`. Only that specification was supplied at the start; no prior extension source, artifacts, fixtures, or lockfile were consulted.
 
 ## Components
 

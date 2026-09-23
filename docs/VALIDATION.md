@@ -1,8 +1,8 @@
 # MailWeave V1.0 validation report
 
-Version **1.0.20**. Generated from the recorded browser run at **2026-09-17T22:34:10.518Z**.
+Version **1.0.30**. Generated from the recorded browser run at **2026-09-18T17:23:41.907Z**.
 
-**53/53 browser test groups passed.** Numbered mappings are in ACCEPTANCE.md. Runtime ZIP verification separately checks the exact allowlist, JavaScript syntax, manifest/package versions, and byte-identical rebuilds.
+**55/55 browser test groups passed.** Numbered mappings are in ACCEPTANCE.md. Runtime ZIP verification separately checks the exact allowlist, JavaScript syntax, manifest/package versions, and byte-identical rebuilds.
 
 ## Environment
 
@@ -19,16 +19,16 @@ Milliseconds, one recorded run, not a statistical benchmark. Total includes addi
 
 | Messages | Discovery | Expansion wait | Classification | Ending comparison | Sanitize | Render | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 3 | 0.00 | 0.00 | 0.10 | 0.00 | 0.00 | 4.40 | 5.30 |
-| 22 | 0.60 | 0.20 | 0.60 | 0.10 | 0.20 | 13.00 | 15.80 |
-| 56 | 1.80 | 0.40 | 1.90 | 0.30 | 0.30 | 9.60 | 16.10 |
-| 200 | 7.00 | 0.90 | 5.70 | 0.70 | 1.30 | 6.80 | 28.10 |
+| 3 | 0.20 | 0.00 | 0.10 | 0.10 | 0.00 | 1.60 | 2.60 |
+| 22 | 0.50 | 0.30 | 0.80 | 0.20 | 0.20 | 13.40 | 16.40 |
+| 56 | 1.80 | 0.50 | 1.90 | 0.30 | 0.30 | 9.20 | 16.00 |
+| 200 | 6.50 | 0.90 | 6.40 | 0.80 | 1.30 | 6.70 | 28.90 |
 
 Nested quote cleanup, one synthetic message:
 
 - 20 nested quotes: 0.20 ms
 - 100 nested quotes: 0.30 ms
-- 300 nested quotes: 1.40 ms
+- 300 nested quotes: 1.30 ms
 
 Cached fixture bodies required no header expansion. Remaining reported wait is event-loop scheduling, not a body-visibility deadline. Missing-body loading uses a bounded expansion budget. Cleanup/render work yields between messages; extremely large individual bodies may still exceed a frame budget.
 

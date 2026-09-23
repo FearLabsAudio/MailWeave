@@ -1,5 +1,15 @@
 # Changes
 
+## 1.0.30 — September 18, 2026
+
+- Remove the descendant-wide Gmail .nH max-width override that could widen the left navigation and displace its labels. Keep the outer layout reservation.
+- Browser regression reproduces the old rule widening a capped navigation rail; verifies unchanged width/label positions during open, resize and close, with the main content remaining beside the sidebar.
+
+## 1.0.29 — September 18, 2026
+
+- Remove the experimental quick-reply system completely and restore the pre-reply conversation viewer. Remove native composer automation, reply preferences/UI, diagnostics, API proof and experimental release packages.
+- Preserve the later cleanup fix that removes a flattened signature only when its marked tail exactly matches a prior explicit signature, including image URLs.
+
 ## 1.0.20 — September 17, 2026
 
 - Recognize an attribution-only On … wrote block with a matching mailto address immediately before a blockquote when forwarding stripped Gmail’s attribution class. Remove that bounded history including nested footer media. Preserve images and replies outside it.
